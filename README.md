@@ -132,3 +132,48 @@ Then updated each user's Account tab to use @northstar.onmicrosoft.com instead o
 <img width="814" height="1062" alt="UPN-suffix-fix2" src="https://github.com/user-attachments/assets/db6b87c9-fb05-4c02-af1a-fa642894a063" />
 
 ---
+
+### Part 3 — Microsoft Entra Connect (AD → Entra ID Sync)
+### 3.1 Download and Install
+- Downloaded **Microsoft Entra Connect Sync** inside the VM signing in with my Global Administrator account.
+- Entra admin center → Identity → Hybrid management → Microsoft Entra Connect → Get Started → Manage → Download Connect Sync Agent
+- This requires signing in with a Global Administrator account.
+### 3.2 Installation Wizard — Key Decisions
+- Install type: chose Customize (not Express) — needed to scope sync to specific OUs.
+- Required Components: left all optional boxes unchecked — lab doesn't need custom SQL, a custom service account, etc.
+- User Sign-In: chose Password Hash Synchronization — simplest sign-in method, no ADFS needed.
+- When you sign in to Entra, it will automatically sign in and will recognize the hash, but not the password since Entra does not store the actually
+  password. So if you want to change the actually password it would have to be changed in AD and it will automatically sync the new hash in Entra. 
+- Microsoft Entra sign-in (UPN matching): checked "Continue without matching all UPN suffixes to verified domains" — no custom domain owned/verified for this lab; users still sync, just can't sign in with that exact UPN.
+- Uniquely identifying users: chose "Users are represented only once across all directories" — single-forest lab, so no cross-forest identity matching is needed.
+- Domain/OU Filtering: chose Sync selected domains and OUs → checked only NorthstarSyncProject — avoids syncing built-in/default AD accounts.
+- Filter users and devices: chose Synchronize all users and devices — the pilot-group filter here is a second, independent scoping mechanism; the OU filtering above already handles scope.
+
+
+<img width="1760" height="1224" alt="Password-Hash-Sync" src="https://github.com/user-attachments/assets/b33d9869-c77b-4c8a-af0b-37be9196147d" />
+<img width="1744" height="1226" alt="Connect-directories" src="https://github.com/user-attachments/assets/0dee58ee-739d-4ed2-b614-1acc99e6d915" />
+<img width="1742" height="1224" alt="Domain-filtering" src="https://github.com/user-attachments/assets/9723fe92-efe8-4488-8b80-0e94192d9964" />
+<img width="1742" height="1218" alt="Config-complete" src="https://github.com/user-attachments/assets/db0f8c09-1fc9-438e-ba2a-9805ef1350bb" />
+
+### 3.3 Verification
+- Confirmed all three users appear in Entra admin center → Users, each showing:
+- On-premises sync: Yes
+- Company name: Okta (and other attributes) correctly populated from AD
+
+<img width="2860" height="1500" alt="Synced-users" src="https://github.com/user-attachments/assets/3d8db3ce-b2c5-4ea1-b9d2-6032b0269c9f" />
+
+### Part 4 — Entra ID: Dynamic Group for Scoped Provisioning
+- Rather than provisioning the entire directory (this tenant is a Microsoft 365 Developer tenant pre-seeded with ~107 demo users), created a dynamic security group to scope exactly which users get pushed downstream to Okta.
+- Group: Okta Synced Users Membership type: Dynamic User Rule:
+```powershell
+(user.companyName -eq "Northstar") and (user.displayName -startsWith "Northstar")
+```
+- Confirmed all three test users landed in the group automatically. This group is later used to scope the Okta provisioning connector's assignment.
+
+<img width="2840" height="1516" alt="Group-members" src="https://github.com/user-attachments/assets/5f5ad938-58c2-4109-854a-0438c02895eb" />
+
+- In a production environment, an attribute-based dynamic security group would be a best practice for automatically maintaining the set of users provisioned to downstream applications such as Okta. This allows membership to update automatically as users' attributes change.
+- For this lab, I used an assigned security group instead of a dynamic group. Dynamic group membership requires Microsoft Entra ID P1/P2 licensing, which would add unnecessary cost for a three-user demonstration environment.
+
+
+
