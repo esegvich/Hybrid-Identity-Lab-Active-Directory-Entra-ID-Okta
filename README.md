@@ -323,7 +323,7 @@ Clicked Add Integration.
 - To validate the pipeline actually delivers app access, added a simple demo app rather than a real SaaS product.
 ### 7.1 Add a Bookmark App
 - Applications → Applications → Browse App Catalog → "Bookmark App" → Add Integration.
-- Application label: Okta Project
+- Application label: Northstar Project
 - URL: https://www.google.com (placeholder destination for demo purposes — a Bookmark App just redirects to any URL after successful sign-in).
 Saved as Done.
 
@@ -344,7 +344,7 @@ Saved as Done.
 - Added policy enforcement on top of the plain SSO tile.
 ### 8.1 Create the Policy Rule
 - Security → Authentication Policies → selected/created a policy for the app (Okta Project - MFA Policy, attached via the app's Application tab → Switch policy).
-- Add Rule, named Okta Project Rule.
+- Add Rule, named Northstar Project Rule.
 - Conditions:
 - User's group membership includes at least one of: Okta Synced Users
 - User is: Any user
@@ -373,7 +373,7 @@ Saved as Done.
 
 # 8.3 Result
 - Policy created and enabled at Priority 1, above the org's default Catch-all Rule (Priority 2, which allows access with any 2 factor types for everything not matched by a more specific rule).
-- Added the **Okta Project App** to the policy
+- Added the **Northstar Project App** to the policy
 
 <img width="2316" height="1316" alt="Result" src="https://github.com/user-attachments/assets/970730c6-bf8c-42c4-bb02-7fb627836961" />
 
@@ -389,9 +389,9 @@ Saved as Done.
 
 
 - Security → Authentication Policies → (Password policies area) → Add New Password Policy.
-- Policy name: Okta Project - Password Policy
+- Policy name: Northstar Project - Password Policy
 - Policy description: "Password policy for synced Entra ID users"
-- Add group: Okta Synced Users
+- Add group: Northstar Synced Users
 - Authentication Providers → Applies to: Okta
 
 ### 9.2 Password Requirements
@@ -404,7 +404,7 @@ Saved as Done.
 <img width="1532" height="1158" alt="Passord Requirments" src="https://github.com/user-attachments/assets/492bd999-7251-4615-a25a-61f847a78c48" />
 
 ### 9.3 Policy Rule
-- Add Rule → Okta Password Policy Rule
+- Add Rule → Northstar Password Policy Rule
 - If User's IP is: Anywhere
 - Then users can perform self-service: Password change, Password reset, Unlock account — all enabled
 - Recovery authenticators / Access control: left on "Authentication policy" (uses the Okta account management policy for controlling reset/unlock conditions, rather than the legacy per-rule setting).
@@ -412,7 +412,7 @@ Saved as Done.
 <img width="938" height="904" alt="Image 9-8-26 at 22 02" src="https://github.com/user-attachments/assets/9b597485-fc56-421f-960e-209e3bcb3ab2" />
 
 ### 9.4 Result
-- Okta Project - Password Policy shown as Active, listed above the org's Default Policy, scoped specifically to the Okta Synced Users group.
+- Northstar Project - Password Policy shown as Active, listed above the org's Default Policy, scoped specifically to the Okta Synced Users group.
 
 <img width="1708" height="1096" alt="Password Result" src="https://github.com/user-attachments/assets/a2af897e-c52a-4f94-9c8c-32a157a8b7b8" />
 
@@ -420,13 +420,13 @@ Saved as Done.
 ### Part 10 — End-to-End Sign-In Test
 - With provisioning, attribute mapping, app assignment, MFA policy, and password policy all in place, ran a full sign-in test as a real end user.
 ### 10.1 Activate the User
-- Directory → People → OktaUser3 → More Actions → Set Password & Activate (equivalent: Reset Password, which generates a temporary password immediately, e.g. 6vQ9T?%riC!2).
+- Directory → People → NorthstarUser3 → More Actions → Set Password & Activate (equivalent: Reset Password, which generates a temporary password immediately, e.g. 6vQ9T?%riC!2).
 - Result: user status moved from Staged → Pending user action.
 
 <img width="2864" height="1420" alt="Actice User" src="https://github.com/user-attachments/assets/2516aaf6-d983-4ec9-a13f-63929ceaa5af" />
 
 ### 10.2 First Sign-In as the End User
-- Navigated to the Okta end-user sign-in page and signed in as oktauser3@arbofelipe2003outlook.onmicrosoft.com with the temporary password.
+- Navigated to the Okta end-user sign-in page and signed in as northstaruser1@ehsegvichgmail.onmicrosoft.com with the temporary password.
 - Immediately prompted: "Your password has expired" — required to set a new password meeting the Part 9 policy (12+ chars, mixed case, number, symbol, no name fragments).
 - After successfully changing the password, prompted to "Set up security methods" — Okta Verify shown as Required now (this is the MFA policy from Part 8 kicking in on first login).
 
