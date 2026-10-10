@@ -401,7 +401,7 @@ Saved as Done.
 - Does not contain part of username, first name, or last name
 - Left "Maximum 2 consecutive repeating characters" unchecked.
 
-<img width="1386" height="1390" alt="Password Policy Rule" src="https://github.com/user-attachments/assets/2cf01adb-9ef7-49f2-8ef8-b924c3a623ef" />
+<img width="1532" height="1158" alt="Passord Requirments" src="https://github.com/user-attachments/assets/492bd999-7251-4615-a25a-61f847a78c48" />
 
 ### 9.3 Policy Rule
 - Add Rule → Okta Password Policy Rule
@@ -423,8 +423,7 @@ Saved as Done.
 - Directory → People → OktaUser3 → More Actions → Set Password & Activate (equivalent: Reset Password, which generates a temporary password immediately, e.g. 6vQ9T?%riC!2).
 - Result: user status moved from Staged → Pending user action.
 
-<img width="1440" height="1484" alt="End User Sign-In" src="https://github.com/user-attachments/assets/1d84790a-3d6c-466c-b746-31fdd7769831" />
-
+<img width="2864" height="1420" alt="Actice User" src="https://github.com/user-attachments/assets/2516aaf6-d983-4ec9-a13f-63929ceaa5af" />
 
 ### 10.2 First Sign-In as the End User
 - Navigated to the Okta end-user sign-in page and signed in as oktauser3@arbofelipe2003outlook.onmicrosoft.com with the temporary password.
